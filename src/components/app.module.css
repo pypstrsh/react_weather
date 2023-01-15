@@ -1,0 +1,57 @@
+.main {
+    max-width: 1440px;
+    margin: 0 auto;
+    background: linear-gradient(112.67deg, #AD36CB 32.23%, #333333 67.37%);
+    box-shadow: 0px 4px 4px rgba(253, 245, 245, 0.25), 0px 4px 4px rgba(255, 250, 250, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 11px;
+}
+
+.container {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.day {
+    font-size: 40px;
+    color: #fff;
+    margin: 0;
+}
+
+.date {
+    font-size: 40px;
+    color: #fff;
+    margin: 0;
+}
+
+.temperature {
+    display: flex;
+    gap: 20px;
+    font-size: 100px;
+    color: #fff;
+    margin: 60px 0 0;
+}
+
+.temp_feel {
+    font-size: 60px;
+    color: #fff;
+    margin: 0;
+    margin-top: 40px;
+}
+
+.list {
+    display: flex;
+    gap: 35px;
+    align-items: center;
+    padding-inline-start: 0;
+    margin-top: 30px;
+}
+
+.day_container {
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
