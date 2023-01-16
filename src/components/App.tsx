@@ -117,16 +117,16 @@ export class App extends Component<{}, AppState> {
                             this.setState({isSelect: e.target.value})
                         }}>
                             <option value={"metric"}>&#176;C</option>
-                            <option value={"standart"}>&#176;F</option>
+                            <option value={"standart"}>&#176;K</option>
                         </select>
                     </div>
                     <p className={css.temperature}>
                         <img src={temp} alt={"temperature icon"}/>
-                        {Math.round(this.state.weather?.main.temp!)}&#176;{this.state.isSelect === "metric" ? "C" : "F"}
+                        {Math.round(this.state.weather?.main.temp!)}&#176;{this.state.isSelect === "metric" ? "C" : "K"}
                     </p>
 
                     <span className={css.temp_feel}>
-                        feels like {Math.round(this.state.weather?.main.feels_like!)} &#176;{this.state.isSelect === "metric" ? "C" : "F"}
+                        feels like {Math.round(this.state.weather?.main.feels_like!)} &#176;{this.state.isSelect === "metric" ? "C" : "K"}
                     </span>
                     <div className={css.day_container}>
                         <p className={css.date}>{getDate()},</p>
