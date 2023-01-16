@@ -24,8 +24,11 @@ const myFetch = (url: string) => {
     return fetch(url).then((data) => {
         if (data.ok) {
             return data.json();
+        } else {
+            alert("oops")
         }
         throw Error("oops");
+
     });
 };
 
