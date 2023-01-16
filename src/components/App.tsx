@@ -35,16 +35,15 @@ export class App extends Component<{}, AppState> {
             main: {temp: 0, feels_like: 0, humidity: 0, sea_level: 0},
             wind: {speed: 0},
         },
-
         search: "Minsk",
         isLoading: false,
         isSelect: "metric"
     }
 
-    url: string = `https://api.openweathermap.org/data/2.5/weather?q=${this.state.search}&appid=21f54f5696d81d7a71d314ed425f098d&units=metric`
+    url: string = `https://api.openweathermap.org/data/2.5/weather?q=${this.state.search}&appid=21f54f5696d81d7a71d314ed425f098d&units=${this.state.isSelect}`
 
     componentDidMount() {
-        myFetch(this.url)
+        myFetch(`https://api.openweathermap.org/data/2.5/weather?q=${this.state.search}&appid=21f54f5696d81d7a71d314ed425f098d&units=${this.state.isSelect}`)
             .then((data) => this.setState(prev => ({
                 ...prev,
                 weather: {name: data.name, main: {...data.main}, wind: {...data.wind}}
@@ -77,10 +76,10 @@ export class App extends Component<{}, AppState> {
         if (prevState.search !== this.state.search) {
             this.fetchWeatherDebounced();
         }
-        if (prevState.isSelect !== this.state.isSelect) {
-            this.url = `https://api.openweathermap.org/data/2.5/weather?q=${this.state.search}&appid=21f54f5696d81d7a71d314ed425f098d&units=${this.state.isSelect}`
+        if (prevState.isSelect !== this.state.isSelect){
             this.componentDidMount()
         }
+
 
     }
 
@@ -107,16 +106,18 @@ export class App extends Component<{}, AppState> {
         return (
             <div className={css.main}>
                 <div className={css.container}>
-                    <div className={css.logo}>
+                    <div className={css.InputSelect}>
                         <Input value={this.state.search} onChange={(search) => this.setState({search})}/>
+
+                        <select value={this.state.isSelect} onChange={e => {
+                            this.setState({isSelect: e.target.value})
+                        }}>
+                            <option value={"metric"}>&#176;C</option>
+                            <option value={"standart"}>&#176;F</option>
+                        </select>
                     </div>
-                    <select value={this.state.isSelect} onChange={e => {
-                        this.setState({isSelect: e.target.value})
-                    }
-                    }>
-                        <option value={"metric"}>C</option>
-                        <option value={"far"}>F</option>
-                    </select>
+
+
                     <p className={css.temperature}>
                         <img src={temp} alt={"temperature icon"}/>
                         {Math.round(this.state.weather?.main.temp!)}&#176;{this.state.isSelect === "metric" ? "C" : "F"}
