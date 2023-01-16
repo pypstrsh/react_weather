@@ -32,7 +32,6 @@ const myFetch = (url: string) => {
     });
 };
 
-
 export class App extends Component<{}, AppState> {
     state: AppState = {
         weather: {
@@ -43,7 +42,6 @@ export class App extends Component<{}, AppState> {
         isLoading: false,
         isSelect: "metric"
     }
-
     componentDidMount() {
         this.setState({isLoading: true})
         myFetch(`https://api.openweathermap.org/data/2.5/weather?q=${this.state.search}&appid=${process.env.REACT_APP_ApiToken}&units=${this.state.isSelect}`)
@@ -55,11 +53,9 @@ export class App extends Component<{}, AppState> {
             }
         )
     }
-
     fetchWeatherDebounced = debounce(this.componentDidMount, 1_500);
 
-
-    componentDidUpdate(prevProps: Readonly<{}>, prevState: Readonly<AppState>, snapshot?: any): void {
+    componentDidUpdate(prevProps: any, prevState: { weather: Weather; search: string; isSelect: string }): void {
         if (prevState.weather !== this.state.weather) {
             this.infoItems = [
                 {
@@ -104,7 +100,6 @@ export class App extends Component<{}, AppState> {
             value: String(this.state.weather.wind.speed + " km/h"),
         },
     ];
-
 
     render() {
         return (
