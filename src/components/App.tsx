@@ -10,12 +10,13 @@ import humIcon from "../img/humidity-icon.svg"
 import rainIcon from "../img/rain-icon.svg"
 import windIcon from "../img/wind-icon.svg"
 import temp from "./../img/icon_temperature.svg"
-import { debounce } from "lodash";
+import {debounce} from "lodash";
 
 interface AppState {
     weather: Weather;
     search: string;
     isLoading: boolean;
+    isSelect: string;
 }
 
 const myFetch = (url: string) => {
@@ -28,8 +29,6 @@ const myFetch = (url: string) => {
 };
 
 
-
-
 export class App extends Component<{}, AppState> {
     state: AppState = {
         weather: {
@@ -38,12 +37,14 @@ export class App extends Component<{}, AppState> {
         },
 
         search: "Minsk",
-        isLoading: false
+        isLoading: false,
+        isSelect: "metric"
     }
 
+    url: string = `https://api.openweathermap.org/data/2.5/weather?q=${this.state.search}&appid=21f54f5696d81d7a71d314ed425f098d&units=metric`
 
     componentDidMount() {
-        myFetch(`https://api.openweathermap.org/data/2.5/weather?q=${this.state.search}&appid=80705822dbebd2920f115f199483856f&units=metric`)
+        myFetch(this.url)
             .then((data) => this.setState(prev => ({
                 ...prev,
                 weather: {name: data.name, main: {...data.main}, wind: {...data.wind}}
@@ -76,6 +77,11 @@ export class App extends Component<{}, AppState> {
         if (prevState.search !== this.state.search) {
             this.fetchWeatherDebounced();
         }
+        if (prevState.isSelect !== this.state.isSelect) {
+            this.url = `https://api.openweathermap.org/data/2.5/weather?q=${this.state.search}&appid=21f54f5696d81d7a71d314ed425f098d&units=${this.state.isSelect}`
+            this.componentDidMount()
+        }
+
     }
 
     infoItems: { icon?: any; label: string; value: string }[] = [
@@ -96,6 +102,7 @@ export class App extends Component<{}, AppState> {
         },
     ];
 
+
     render() {
         return (
             <div className={css.main}>
@@ -103,14 +110,20 @@ export class App extends Component<{}, AppState> {
                     <div className={css.logo}>
                         <Input value={this.state.search} onChange={(search) => this.setState({search})}/>
                     </div>
+                    <select value={this.state.isSelect} onChange={e => {
+                        this.setState({isSelect: e.target.value})
+                    }
+                    }>
+                        <option value={"metric"}>C</option>
+                        <option value={"far"}>F</option>
+                    </select>
                     <p className={css.temperature}>
-                        <img src={temp}/>
-                        {Math.round(this.state.weather?.main.temp!)}&#176;C
+                        <img src={temp} alt={"temperature icon"}/>
+                        {Math.round(this.state.weather?.main.temp!)}&#176;{this.state.isSelect === "metric" ? "C" : "F"}
                     </p>
+
                     <span className={css.temp_feel}>
-
-
-                        feels like {Math.round(this.state.weather?.main.feels_like!)} &#176;C
+                        feels like {Math.round(this.state.weather?.main.feels_like!)} &#176;{this.state.isSelect === "metric" ? "C" : "F"}
                     </span>
                     <div className={css.day_container}>
                         <p className={css.date}>{getDate()},</p>
