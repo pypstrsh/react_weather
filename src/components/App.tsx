@@ -4,20 +4,20 @@ import {Component} from "react"
 import {getDay} from "./utils/getDay"
 import {getDate} from "./utils/getDate"
 import {Input} from "./Input"
-
-
 import css from "./app.module.css"
 import humIcon from "../img/humidity-icon.svg"
 import rainIcon from "../img/rain-icon.svg"
 import windIcon from "../img/wind-icon.svg"
 import temp from "./../img/icon_temperature.svg"
 import {debounce} from "lodash";
+import {Loader} from "./Loader";
 
 interface AppState {
     weather: Weather;
     search: string;
     isLoading: boolean;
     isSelect: string;
+
 }
 
 const myFetch = (url: string) => {
@@ -42,11 +42,15 @@ export class App extends Component<{}, AppState> {
     }
 
     componentDidMount() {
+        this.setState({isLoading: true})
         myFetch(`https://api.openweathermap.org/data/2.5/weather?q=${this.state.search}&appid=${process.env.REACT_APP_ApiToken}&units=${this.state.isSelect}`)
             .then((data) => this.setState(prev => ({
                 ...prev,
                 weather: {name: data.name, main: {...data.main}, wind: {...data.wind}}
-            })))
+            }))).finally(() => {
+                this.setState({isLoading: false})
+            }
+        )
     }
 
     fetchWeatherDebounced = debounce(this.componentDidMount, 1_500);
@@ -101,7 +105,7 @@ export class App extends Component<{}, AppState> {
 
     render() {
         return (
-            <div className={css.main}>
+            <div>
                 <div className={css.container}>
                     <div className={css.InputSelect}>
                         <Input value={this.state.search} onChange={(search) => this.setState({search})}/>
@@ -113,8 +117,6 @@ export class App extends Component<{}, AppState> {
                             <option value={"standart"}>&#176;F</option>
                         </select>
                     </div>
-
-
                     <p className={css.temperature}>
                         <img src={temp} alt={"temperature icon"}/>
                         {Math.round(this.state.weather?.main.temp!)}&#176;{this.state.isSelect === "metric" ? "C" : "F"}
