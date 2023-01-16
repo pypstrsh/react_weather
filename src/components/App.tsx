@@ -5,6 +5,7 @@ import {getDay} from "./utils/getDay"
 import {getDate} from "./utils/getDate"
 import {Input} from "./Input"
 
+
 import css from "./app.module.css"
 import humIcon from "../img/humidity-icon.svg"
 import rainIcon from "../img/rain-icon.svg"
@@ -41,7 +42,7 @@ export class App extends Component<{}, AppState> {
     }
 
     componentDidMount() {
-        myFetch(`https://api.openweathermap.org/data/2.5/weather?q=${this.state.search}&appid=21f54f5696d81d7a71d314ed425f098d&units=${this.state.isSelect}`)
+        myFetch(`https://api.openweathermap.org/data/2.5/weather?q=${this.state.search}&appid=${process.env.REACT_APP_ApiToken}&units=${this.state.isSelect}`)
             .then((data) => this.setState(prev => ({
                 ...prev,
                 weather: {name: data.name, main: {...data.main}, wind: {...data.wind}}
