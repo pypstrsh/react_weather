@@ -40,8 +40,6 @@ export class App extends Component<{}, AppState> {
         isSelect: "metric"
     }
 
-    url: string = `https://api.openweathermap.org/data/2.5/weather?q=${this.state.search}&appid=21f54f5696d81d7a71d314ed425f098d&units=${this.state.isSelect}`
-
     componentDidMount() {
         myFetch(`https://api.openweathermap.org/data/2.5/weather?q=${this.state.search}&appid=21f54f5696d81d7a71d314ed425f098d&units=${this.state.isSelect}`)
             .then((data) => this.setState(prev => ({
@@ -76,11 +74,9 @@ export class App extends Component<{}, AppState> {
         if (prevState.search !== this.state.search) {
             this.fetchWeatherDebounced();
         }
-        if (prevState.isSelect !== this.state.isSelect){
+        if (prevState.isSelect !== this.state.isSelect) {
             this.componentDidMount()
         }
-
-
     }
 
     infoItems: { icon?: any; label: string; value: string }[] = [
